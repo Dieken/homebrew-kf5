@@ -30,3 +30,29 @@ class Kf5Kmymoney < Formula
 end
 
 __END__
+diff --git a/kmymoney/kmymoney.cpp b/kmymoney/kmymoney.cpp
+index c6ec8da..4ebbec7 100644
+--- a/kmymoney/kmymoney.cpp
++++ b/kmymoney/kmymoney.cpp
+@@ -64,6 +64,7 @@
+ #include <QIcon>
+ #include <QInputDialog>
+ #include <QProgressDialog>
++#include <QStandardPaths>
+ #include <QStatusBar>
+
+ // ----------------------------------------------------------------------------
+@@ -537,6 +538,13 @@ KMyMoneyApp::KMyMoneyApp(QWidget* parent) :
+   layout->setSpacing(6);
+
+   {
++    // See http://doc.qt.io/qt-5/qstandardpaths.html
++    QStringList themeSearchPaths = QStandardPaths::locateAll(
++            QStandardPaths::AppDataLocation,
++            QStringLiteral("icons"),
++            QStandardPaths::LocateDirectory | QStandardPaths::LocateFile);
++    themeSearchPaths += QStringLiteral(":/icons");
++    QIcon::setThemeSearchPaths(themeSearchPaths);
+     QString themeName = KMyMoneySettings::iconsTheme();                 // get theme user wants
+     if (!themeName.isEmpty() && themeName != QLatin1Literal("system"))  // if it isn't default theme then set it
+       QIcon::setThemeName(themeName);
